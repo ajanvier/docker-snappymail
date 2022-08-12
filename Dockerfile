@@ -6,12 +6,13 @@ ARG GPG_FINGERPRINT="1016 E470 7914 5542 F8BA  1335 4820 8BA1 3290 F3EB"
 
 ENV UID=991 GID=991 UPLOAD_MAX_SIZE=25M LOG_TO_STDOUT=false MEMORY_LIMIT=128M
 
+# Installing packages
 RUN echo "@community https://dl-cdn.alpinelinux.org/alpine/v3.16/community" >> /etc/apk/repositories \
  && apk -U upgrade \
  && apk add -t build-dependencies \
     gnupg \
-    openssl \
     wget \
+    curl \
  && apk add \
     ca-certificates \
     nginx \
@@ -38,6 +39,7 @@ RUN echo "@community https://dl-cdn.alpinelinux.org/alpine/v3.16/community" >> /
     php81-pecl-uuid \
     php81-zip
 
+# Downloading latest snappymail release
 RUN cd /tmp \
  && SNAPPYMAIL_VER=$(basename $(curl -fs -o/dev/null -w %{redirect_url} https://github.com/the-djmaze/snappymail/releases/latest) | cut -c2-) \
  && SNAPPYMAIL_TGZ="snappymail-${SNAPPYMAIL_VER}.tar.gz" \
@@ -52,8 +54,10 @@ RUN cd /tmp \
  && if [ "${FINGERPRINT}" != "${GPG_FINGERPRINT}" ]; then echo "ERROR: Wrong GPG fingerprint!" && exit 1; fi \
  && mkdir /snappymail && tar xvf /tmp/snappymail-community-latest.zip -d /snappymail \
  && find /snappymail -type d -exec chmod 755 {} \; \
- && find /snappymail -type f -exec chmod 644 {} \; \
- && apk del build-dependencies \
+ && find /snappymail -type f -exec chmod 644 {} \;
+
+# Removing install dependencies
+RUN apk del build-dependencies wget curl \
  && rm -rf /tmp/* /var/cache/apk/* /root/.gnupg
 
 COPY rootfs /
