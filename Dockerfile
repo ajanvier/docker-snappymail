@@ -1,14 +1,12 @@
-FROM alpine:3.14
+FROM alpine:3.16
 
-LABEL description "Rainloop is a simple, modern & fast web-based client"
+LABEL description "SnappyMail is a simple, modern, lightweight & fast web-based client"
 
-ARG RAINLOOP_VER=1.16.0
-
-ARG GPG_FINGERPRINT="3B79 7ECE 694F 3B7B 70F3  11A4 ED7C 49D9 87DA 4591"
+ARG GPG_FINGERPRINT="1016 E470 7914 5542 F8BA  1335 4820 8BA1 3290 F3EB"
 
 ENV UID=991 GID=991 UPLOAD_MAX_SIZE=25M LOG_TO_STDOUT=false MEMORY_LIMIT=128M
 
-RUN echo "@community https://nl.alpinelinux.org/alpine/v3.13/community" >> /etc/apk/repositories \
+RUN echo "@community https://dl-cdn.alpinelinux.org/alpine/v3.16/community" >> /etc/apk/repositories \
  && apk -U upgrade \
  && apk add -t build-dependencies \
     gnupg \
@@ -19,38 +17,47 @@ RUN echo "@community https://nl.alpinelinux.org/alpine/v3.13/community" >> /etc/
     nginx \
     s6 \
     su-exec \
-    php7-fpm@community \
-    php7-curl@community \
-    php7-iconv@community \
-    php7-xml@community \
-    php7-dom@community \
-    php7-openssl@community \
-    php7-json@community \
-    php7-zlib@community \
-    php7-pdo_pgsql@community \
-    php7-pdo_mysql@community \
-    php7-pdo_sqlite@community \
-    php7-sqlite3@community \
-    php7-ldap@community \
-    php7-simplexml@community \
- && cd /tmp \
- && RAINLOOP_ZIP="rainloop-community-${RAINLOOP_VER}.zip" \
- && wget -q -O rainloop-community-latest.zip https://github.com/RainLoop/rainloop-webmail/releases/download/v${RAINLOOP_VER}/${RAINLOOP_ZIP} \
- && wget -q -O rainloop-community-latest.zip.asc https://github.com/RainLoop/rainloop-webmail/releases/download/v${RAINLOOP_VER}/${RAINLOOP_ZIP}.asc \
- && wget -q https://www.rainloop.net/repository/RainLoop.asc \
- && gpg --import RainLoop.asc \
- && FINGERPRINT="$(LANG=C gpg --verify rainloop-community-latest.zip.asc rainloop-community-latest.zip 2>&1 \
+    php81-fpm@community \
+    php81-mbstring@community \
+    php81-zlib@community \
+    php81-json@community \
+    php81-xml@community \
+    php81-simplexml@community \
+    php81-dom@community \
+    php81-curl@community \
+    php81-exif@community \
+    php81-gd@community \
+    php81-iconv@community \
+    php81-intl@community \
+    php81-ldap@community \
+    php81-pdo_pgsql@community \
+    php81-pdo_mysql@community \
+    php81-pdo_sqlite@community \
+    php81-sqlite3@community \
+    php81-tidy \
+    php81-pecl-uuid \
+    php81-zip
+
+RUN cd /tmp \
+ && SNAPPYMAIL_VER=$(basename $(curl -fs -o/dev/null -w %{redirect_url} https://github.com/the-djmaze/snappymail/releases/latest) | cut -c2-) \
+ && SNAPPYMAIL_TGZ="snappymail-${SNAPPYMAIL_VER}.tar.gz" \
+ && wget -q -O /usr/local/include/application.ini https://raw.githubusercontent.com/the-djmaze/snappymail/master/.docker/release/files/usr/local/include/application.ini \
+ && wget -q -O snappymail-latest.tar.gz https://github.com/the-djmaze/snappymail/releases/download/v${SNAPPYMAIL_VER}/${SNAPPYMAIL_TGZ} \
+ && wget -q -O snappymail-latest.tar.gz.asc https://github.com/the-djmaze/snappymail/releases/download/v${SNAPPYMAIL_VER}/${SNAPPYMAIL_TGZ}.asc \
+ && wget -q https://raw.githubusercontent.com/the-djmaze/snappymail/master/build/SnappyMail.asc \
+ && gpg --import SnappyMail.asc \
+ && FINGERPRINT="$(LANG=C gpg --verify snappymail-latest.tar.gz.asc snappymail-latest.tar.gz 2>&1 \
   | sed -n "s#Primary key fingerprint: \(.*\)#\1#p")" \
  && if [ -z "${FINGERPRINT}" ]; then echo "ERROR: Invalid GPG signature!" && exit 1; fi \
  && if [ "${FINGERPRINT}" != "${GPG_FINGERPRINT}" ]; then echo "ERROR: Wrong GPG fingerprint!" && exit 1; fi \
- && mkdir /rainloop && unzip -q /tmp/rainloop-community-latest.zip -d /rainloop \
- && find /rainloop -type d -exec chmod 755 {} \; \
- && find /rainloop -type f -exec chmod 644 {} \; \
+ && mkdir /snappymail && tar xvf /tmp/snappymail-community-latest.zip -d /snappymail \
+ && find /snappymail -type d -exec chmod 755 {} \; \
+ && find /snappymail -type f -exec chmod 644 {} \; \
  && apk del build-dependencies \
  && rm -rf /tmp/* /var/cache/apk/* /root/.gnupg
 
 COPY rootfs /
 RUN chmod +x /usr/local/bin/run.sh /services/*/run /services/.s6-svscan/*
-VOLUME /rainloop/data
+VOLUME /snappymail/data
 EXPOSE 8888
 CMD ["run.sh"]

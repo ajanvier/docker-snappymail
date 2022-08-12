@@ -1,19 +1,18 @@
-# mailserver2/rainloop
+# ajanvier/docker-snappymail
 
-![](https://i.goopics.net/nI.png)
+![](https://snappymail.eu/static/img/logo-256x256.png)
 
 ### What is this ?
 
-Rainloop is a simple, modern & fast web-based client. More details on the [official website](http://www.rainloop.net/).
+Snappymail is a simple, modern & fast web-based client. More details on the [official website](https://snappymail.eu/).
 
 ### Features
 
 - Lightweight & secure image (no root process)
 - Based on Alpine
-- Latest Rainloop **Community Edition** (stable)
+- Latest Snappymail (stable)
 - Contacts (DB) : sqlite, mysql or pgsql (server not built-in)
-- With Nginx and PHP7
-- Postfixadmin-change-password plugin
+- With Nginx and PHP 8.1
 
 ### Build-time variables
 
@@ -27,10 +26,10 @@ Rainloop is a simple, modern & fast web-based client. More details on the [offic
 
 | Variable | Description | Type | Default value |
 | -------- | ----------- | ---- | ------------- |
-| **UID** | rainloop user id | *optional* | 991
-| **GID** | rainloop group id | *optional* | 991
+| **UID** | snappymail user id | *optional* | 991
+| **GID** | snappymail group id | *optional* | 991
 | **UPLOAD_MAX_SIZE** | Attachment size limit | *optional* | 25M
-| **LOG_TO_STDOUT** | Enable nginx and php error logs to stdout | *optional* | false
+| **LOG_TO_STDOUT** | Enable nginx, php and snappymail error logs to stdout | *optional* | false
 | **MEMORY_LIMIT** | PHP memory limit | *optional* | 128M
 
 ### Docker-compose.yml
@@ -39,15 +38,11 @@ Rainloop is a simple, modern & fast web-based client. More details on the [offic
 # Full example :
 # https://github.com/mailserver2/mailserver/blob/master/docker-compose.sample.yml
 
-rainloop:
-  image: mailserver2/rainloop
-  container_name: rainloop
+snappymail:
+  image: ajanvier/snappymail
+  container_name: snappymail
   volumes:
-    - /mnt/docker/rainloop:/rainloop/data
+    - /mnt/docker/snappymail:/snappymail/data
   depends_on:
     - mailserver
 ```
-
-#### How to setup
-
-https://github.com/mailserver2/mailserver/wiki/Rainloop-initial-configuration
