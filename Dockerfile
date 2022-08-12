@@ -34,6 +34,7 @@ RUN echo "@community https://dl-cdn.alpinelinux.org/alpine/v3.16/community" >> /
     php81-pdo_pgsql@community \
     php81-pdo_mysql@community \
     php81-pdo_sqlite@community \
+    php81-phar \
     php81-sqlite3@community \
     php81-tidy \
     php81-pecl-uuid \
