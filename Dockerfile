@@ -43,6 +43,7 @@ RUN echo "@community https://dl-cdn.alpinelinux.org/alpine/v3.16/community" >> /
 RUN cd /tmp \
  && SNAPPYMAIL_VER=$(basename $(curl -fs -o/dev/null -w %{redirect_url} https://github.com/the-djmaze/snappymail/releases/latest) | cut -c2-) \
  && SNAPPYMAIL_TGZ="snappymail-${SNAPPYMAIL_VER}.tar.gz" \
+ && mkdir -p /usr/local/include \
  && wget -q -O /usr/local/include/application.ini https://raw.githubusercontent.com/the-djmaze/snappymail/master/.docker/release/files/usr/local/include/application.ini \
  && wget -q -O snappymail-latest.tar.gz https://github.com/the-djmaze/snappymail/releases/download/v${SNAPPYMAIL_VER}/${SNAPPYMAIL_TGZ} \
  && wget -q -O snappymail-latest.tar.gz.asc https://github.com/the-djmaze/snappymail/releases/download/v${SNAPPYMAIL_VER}/${SNAPPYMAIL_TGZ}.asc \
@@ -52,7 +53,7 @@ RUN cd /tmp \
   | sed -n "s#Primary key fingerprint: \(.*\)#\1#p")" \
  && if [ -z "${FINGERPRINT}" ]; then echo "ERROR: Invalid GPG signature!" && exit 1; fi \
  && if [ "${FINGERPRINT}" != "${GPG_FINGERPRINT}" ]; then echo "ERROR: Wrong GPG fingerprint!" && exit 1; fi \
- && mkdir /snappymail && tar xvf /tmp/snappymail-community-latest.zip -d /snappymail \
+ && mkdir /snappymail && tar xf /tmp/snappymail-latest.tar.gz -C /snappymail \
  && find /snappymail -type d -exec chmod 755 {} \; \
  && find /snappymail -type f -exec chmod 644 {} \;
 
