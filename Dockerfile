@@ -19,26 +19,28 @@ RUN echo "@community https://dl-cdn.alpinelinux.org/alpine/v3.16/community" >> /
     s6 \
     su-exec \
     php81-fpm@community \
-    php81-mbstring@community \
-    php81-zlib@community \
-    php81-json@community \
-    php81-xml@community \
-    php81-simplexml@community \
-    php81-dom@community \
     php81-curl@community \
+    php81-ctype@community \
+    php81-dom@community \
     php81-exif@community \
     php81-gd@community \
     php81-iconv@community \
     php81-intl@community \
+    php81-json@community \
     php81-ldap@community \
-    php81-pdo_pgsql@community \
+    php81-mbstring@community \
+    php81-opcache@community \
     php81-pdo_mysql@community \
+    php81-pdo_pgsql@community \
     php81-pdo_sqlite@community \
-    php81-phar \
+    php81-pecl-uuid@community \
+    php81-phar@community \
+    php81-simplexml@community \
     php81-sqlite3@community \
-    php81-tidy \
-    php81-pecl-uuid \
-    php81-zip
+    php81-tidy@community \
+    php81-xml@community \
+    php81-zip@community \
+    php81-zlib@community
 
 # Downloading latest snappymail release
 RUN cd /tmp \
