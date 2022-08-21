@@ -1,4 +1,10 @@
 # ajanvier/docker-snappymail
+![Docker Image Size](https://img.shields.io/docker/image-size/ajanvier/snappymail)
+![Docker Pulls](https://img.shields.io/docker/pulls/ajanvier/snappymail)
+![Docker Latest Version](https://img.shields.io/docker/v/ajanvier/snappymail?sort=semver)
+
+
+<img src="https://icons.duckduckgo.com/ip3/hub.docker.com.ico"  width="16px" /> Docker Hub : https://hub.docker.com/r/ajanvier/snappymail
 
 ![](https://snappymail.eu/static/img/logo-256x256.png)
 
