@@ -1,15 +1,15 @@
 #!/bin/sh
 
 # Set attachment size limit
-sed -i "s/<UPLOAD_MAX_SIZE>/$UPLOAD_MAX_SIZE/g" /etc/php81/php-fpm.conf /etc/nginx/nginx.conf
-sed -i "s/<MEMORY_LIMIT>/$MEMORY_LIMIT/g" /etc/php81/php-fpm.conf
+sed -i "s/<UPLOAD_MAX_SIZE>/$UPLOAD_MAX_SIZE/g" /etc/php82/php-fpm.conf /etc/nginx/nginx.conf
+sed -i "s/<MEMORY_LIMIT>/$MEMORY_LIMIT/g" /etc/php82/php-fpm.conf
 
 # Set log output to STDOUT if wanted (LOG_TO_STDOUT=true)
 if [ "$LOG_TO_STDOUT" = true ]; then
   echo "[INFO] Logging to stdout activated"
   chmod o+w /dev/stdout
   sed -i "s/.*error_log.*$/error_log \/dev\/stdout warn;/" /etc/nginx/nginx.conf
-  sed -i "s/.*error_log.*$/error_log = \/dev\/stdout/" /etc/php81/php-fpm.conf
+  sed -i "s/.*error_log.*$/error_log = \/dev\/stdout/" /etc/php82/php-fpm.conf
 fi
 
 # Secure cookies
@@ -19,7 +19,7 @@ if [ "${SECURE_COOKIES}" = true ]; then
         	echo 'session.cookie_httponly = On';
         	echo 'session.cookie_secure = On';
         	echo 'session.use_only_cookies = On';
-        } > /etc/php81/conf.d/cookies.ini;
+        } > /etc/php82/conf.d/cookies.ini;
 fi
 
 SNAPPYMAIL_CONFIG_FILE=/snappymail/data/_data_/_default_/configs/application.ini

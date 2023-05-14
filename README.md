@@ -18,7 +18,7 @@ Snappymail is a simple, modern & fast web-based client. More details on the [off
 - Based on Alpine
 - Latest Snappymail (stable)
 - Contacts (DB) : sqlite, mysql or pgsql (server not built-in)
-- With Nginx and PHP 8.1
+- With Nginx and PHP 8.2
 
 ### Build-time variables
 

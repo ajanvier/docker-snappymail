@@ -1,4 +1,4 @@
-FROM alpine:3.16
+FROM alpine:3.18
 
 LABEL description "SnappyMail is a simple, modern, lightweight & fast web-based client"
 
@@ -7,40 +7,42 @@ ARG GPG_FINGERPRINT="1016 E470 7914 5542 F8BA  1335 4820 8BA1 3290 F3EB"
 ENV UID=991 GID=991 UPLOAD_MAX_SIZE=25M LOG_TO_STDOUT=false MEMORY_LIMIT=128M
 
 # Installing packages
-RUN echo "@community https://dl-cdn.alpinelinux.org/alpine/v3.16/community" >> /etc/apk/repositories \
+RUN echo "@community https://dl-cdn.alpinelinux.org/alpine/v3.18/community" >> /etc/apk/repositories \
+  && apk update \
  && apk -U upgrade \
  && apk add -t build-dependencies \
     gnupg \
     wget \
     curl \
  && apk add \
+    sed \
     ca-certificates \
     nginx \
     s6 \
     su-exec \
-    php81-fpm@community \
-    php81-curl@community \
-    php81-ctype@community \
-    php81-dom@community \
-    php81-exif@community \
-    php81-gd@community \
-    php81-iconv@community \
-    php81-intl@community \
-    php81-json@community \
-    php81-ldap@community \
-    php81-mbstring@community \
-    php81-opcache@community \
-    php81-pdo_mysql@community \
-    php81-pdo_pgsql@community \
-    php81-pdo_sqlite@community \
-    php81-pecl-uuid@community \
-    php81-phar@community \
-    php81-simplexml@community \
-    php81-sqlite3@community \
-    php81-tidy@community \
-    php81-xml@community \
-    php81-zip@community \
-    php81-zlib@community
+    php82-fpm@community \
+    php82-curl@community \
+    php82-ctype@community \
+    php82-dom@community \
+    php82-exif@community \
+    php82-gd@community \
+    php82-iconv@community \
+    php82-intl@community \
+    php82-json@community \
+    php82-ldap@community \
+    php82-mbstring@community \
+    php82-opcache@community \
+    php82-pdo_mysql@community \
+    php82-pdo_pgsql@community \
+    php82-pdo_sqlite@community \
+    php82-pecl-uuid@community \
+    php82-phar@community \
+    php82-simplexml@community \
+    php82-sqlite3@community \
+    php82-tidy@community \
+    php82-xml@community \
+    php82-zip@community \
+    php82-zlib@community
 
 # Downloading latest snappymail release
 RUN cd /tmp \
