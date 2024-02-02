@@ -1,4 +1,4 @@
-FROM alpine:3.18
+FROM alpine:3.19
 
 LABEL description "SnappyMail is a simple, modern, lightweight & fast web-based client"
 
@@ -9,7 +9,7 @@ ARG GPG_FINGERPRINT="1016 E470 7914 5542 F8BA  1335 4820 8BA1 3290 F3EB"
 ENV UID=991 GID=991 UPLOAD_MAX_SIZE=25M LOG_TO_STDOUT=false MEMORY_LIMIT=128M
 
 # Installing packages
-RUN echo "@community https://dl-cdn.alpinelinux.org/alpine/v3.18/community" >> /etc/apk/repositories \
+RUN echo "@community https://dl-cdn.alpinelinux.org/alpine/v3.19/community" >> /etc/apk/repositories \
   && apk update \
  && apk -U upgrade \
  && apk add -t build-dependencies \
