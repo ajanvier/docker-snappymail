@@ -26,6 +26,7 @@ RUN echo "@community https://dl-cdn.alpinelinux.org/alpine/v3.18/community" >> /
     php82-dom@community \
     php82-exif@community \
     php82-gd@community \
+    php82-fileinfo@community \
     php82-iconv@community \
     php82-intl@community \
     php82-json@community \
