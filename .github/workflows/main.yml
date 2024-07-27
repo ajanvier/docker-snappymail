@@ -1,0 +1,31 @@
+name: Check if a new release was published
+on:
+  schedule:
+    - cron:  '47 * * * *'
+  workflow_dispatch:
+jobs:
+  get_versions:
+    runs-on: ubuntu-latest
+    outputs:
+      release_version: ${{ steps.fetch_release.outputs.RELEASE_VERSION }}
+      image_exists: ${{ steps.fetch_image.outputs.IMAGE_EXISTS }}
+    steps:
+      - name: Fetch latest release version
+        id: fetch_release
+        run: |
+          RELEASE_VERSION="$(curl -sL https://api.github.com/repos/${{ vars.SOURCE_REPOSITORY_NAME }}/releases/latest | jq -r '.tag_name')"
+          RELEASE_VERSION="${RELEASE_VERSION#[vV]}"
+          echo "RELEASE_VERSION=${RELEASE_VERSION}" | tee -a $GITHUB_OUTPUT
+      - name: Fetch latest image version
+        id: fetch_image
+        run: |
+          http_status=$(curl --write-out '%{http_code}' --output /dev/null -sL https://hub.docker.com/v2/repositories/${{ vars.TARGET_IMAGE_NAME }}/tags/${{ steps.fetch_release.outputs.RELEASE_VERSION }})
+          IMAGE_EXISTS=$(if [[ "$http_status" == "200" ]]; then echo "1"; else echo "0"; fi)
+          echo "IMAGE_EXISTS=${IMAGE_EXISTS}" | tee -a $GITHUB_OUTPUT
+  publish_image:
+    needs: get_versions
+    if: ${{ needs.get_versions.outputs.image_exists == 0 }}
+    uses: ./.github/workflows/publish-image.yml
+    with:
+      image_version: "${{ needs.get_versions.outputs.release_version }}"
+    secrets: inherit
