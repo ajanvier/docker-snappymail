@@ -1,5 +1,5 @@
 # ajanvier/docker-snappymail
-![Docker Image Size](https://img.shields.io/docker/image-size/ajanvier/snappymail)
+![Docker Image Size](https://img.shields.io/docker/image-size/ajanvier/snappymail/latest)
 ![Docker Pulls](https://img.shields.io/docker/pulls/ajanvier/snappymail)
 ![Docker Latest Version](https://img.shields.io/docker/v/ajanvier/snappymail?sort=semver)
 
